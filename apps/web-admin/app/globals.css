@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "../../../packages/ui/src/tokens.css";
+
+/* Componentes del design system viven en packages/ui (fuente TS directa). */
+@source "../../../packages/ui/src";

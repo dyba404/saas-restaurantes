@@ -1,0 +1,36 @@
+{
+  "name": "@rest/pos",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@point-of-sale/network-receipt-printer": "^2.0.1",
+    "@point-of-sale/receipt-printer-encoder": "^3.0.3",
+    "@point-of-sale/webbluetooth-receipt-printer": "^2.0.0",
+    "@point-of-sale/webserial-receipt-printer": "^2.0.0",
+    "@point-of-sale/webusb-receipt-printer": "^2.0.0",
+    "@rest/printer": "*",
+    "@rest/sync": "*",
+    "@rest/types": "*",
+    "@rest/ui": "*",
+    "lucide-react": "^0.544.0",
+    "next": "^15.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@serwist/next": "^9.5.12",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "serwist": "^9.5.12",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2"
+  }
+}

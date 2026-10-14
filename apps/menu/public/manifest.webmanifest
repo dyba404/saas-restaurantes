@@ -1,0 +1,13 @@
+{
+  "name": "Carta — Cevichería El Muelle",
+  "short_name": "Carta",
+  "description": "Menú digital y pedidos desde la mesa",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#e8501a",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

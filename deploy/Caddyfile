@@ -1,0 +1,31 @@
+# Caddy LAN/debug: cada sitio sirve en HTTP (host 8080) y HTTPS con CA interna
+# (host 8443; los navegadores pedirán aceptar el certificado una vez).
+# El acceso público real va por Cloudflare Tunnel (perfil "tunnel" del compose),
+# que entra por HTTP interno a los servicios y no pasa por aquí.
+{
+	admin off
+}
+
+http://{$API_DOMAIN}, https://{$API_DOMAIN} {
+	tls internal
+	encode zstd gzip
+	reverse_proxy web:3000
+}
+
+http://{$POS_DOMAIN}, https://{$POS_DOMAIN} {
+	tls internal
+	encode zstd gzip
+	reverse_proxy pos:3001
+}
+
+http://{$KDS_DOMAIN}, https://{$KDS_DOMAIN} {
+	tls internal
+	encode zstd gzip
+	reverse_proxy kds:3002
+}
+
+http://{$CARTA_DOMAIN}, https://{$CARTA_DOMAIN} {
+	tls internal
+	encode zstd gzip
+	reverse_proxy menu:3003
+}

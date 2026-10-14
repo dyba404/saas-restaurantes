@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "../../../packages/ui/src/tokens.css";
+
+@source "../../../packages/ui/src";
+
+/* POS: targets táctiles grandes, sin scroll horizontal, densidad controlada. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}

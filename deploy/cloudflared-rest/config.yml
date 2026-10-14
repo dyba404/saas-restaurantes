@@ -1,0 +1,19 @@
+# Ingress del tunnel Cloudflare de REST (gestion LOCAL, patron OdontoFlow).
+# Tunnel rest-prod (id 1981b7fb) — credenciales fuera del repo en
+# /home/dev/.cloudflared (host WSL), montadas read-only en /etc/cloudflared/creds.
+# Temporal con el dominio marsmode.me: al comprar el dominio definitivo solo
+# hay que re-crear las rutas DNS (cloudflared tunnel route dns -f rest-prod
+# <nuevo-hostname>) y actualizar .env + rebuild.
+tunnel: 1981b7fb-5a4d-4e62-bff4-945c36958f8a
+credentials-file: /etc/cloudflared/creds/1981b7fb-5a4d-4e62-bff4-945c36958f8a.json
+
+ingress:
+  - hostname: rest.marsmode.me
+    service: http://web:3000
+  - hostname: pos.marsmode.me
+    service: http://pos:3001
+  - hostname: kds.marsmode.me
+    service: http://kds:3002
+  - hostname: carta.marsmode.me
+    service: http://menu:3003
+  - service: http_status:404

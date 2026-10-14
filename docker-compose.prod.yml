@@ -1,0 +1,163 @@
+# Stack de producción de "rest" — SaaS de restaurantes (Perú).
+#
+# Diseñado para convivir con otros stacks en el mismo host (odontoflow, etc.):
+# - name: rest-prod → red, volúmenes y contenedores con prefijo propio.
+# - La DB NO publica puertos al host (solo red interna rest-prod).
+# - Caddy usa puertos altos configurables (8080/8443 por defecto): los 80/443
+#   quedan libres para el Caddy de otros stacks. Acceso público real vía
+#   Cloudflare Tunnel (`--profile tunnel`), que no ocupa puertos del host.
+# - Solo los servicios de ESTE proyecto llevan restart: unless-stopped.
+#
+# Requiere un archivo .env en la raíz: cp deploy/.env.prod.example .env
+
+name: rest-prod
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: rest-prod-db
+    # Zona horaria del negocio: los cortes de día de reports/dashboard son hora de Lima.
+    command: ["postgres", "-c", "timezone=America/Lima"]
+    environment:
+      # Zona horaria del negocio: now(), date_trunc y los cortes de día del
+      # reports/dashboard quedan en hora de Lima (no UTC).
+      TZ: America/Lima
+      POSTGRES_USER: ${POSTGRES_USER:-rest}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD en .env}
+      POSTGRES_DB: ${POSTGRES_DB:-rest}
+    volumes:
+      - rest-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rest} -d ${POSTGRES_DB:-rest}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    # SIN ports: la DB nunca se expone al host (evita chocar con clinicflow-db, etc.)
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NEXT_PUBLIC_ORG_SLUG: ${NEXT_PUBLIC_ORG_SLUG:-cevicheria-el-muelle}
+    container_name: rest-prod-migrate
+    command: ["node", "deploy/migrate.mjs"]
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-rest}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-rest}
+      DEMO_SEED: ${DEMO_SEED:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NEXT_PUBLIC_ORG_SLUG: ${NEXT_PUBLIC_ORG_SLUG:-cevicheria-el-muelle}
+    container_name: rest-prod-web
+    command: ["sh", "-c", "cd apps/web-admin && ../../node_modules/.bin/next start -H 0.0.0.0 -p 3000"]
+    environment:
+      TZ: America/Lima
+      DATABASE_URL: postgres://${POSTGRES_USER:-rest}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-rest}
+      AUTH_SECRET: ${AUTH_SECRET:?define AUTH_SECRET en .env (node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+      SUPERADMIN_EMAIL: ${SUPERADMIN_EMAIL:-}
+      DEVICE_AUTH: ${DEVICE_AUTH:-false}
+      SIGNUP_OPEN: ${SIGNUP_OPEN:-true}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      # Sonda /api/health (valida app + DB). La usa el monitoreo externo.
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  pos:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NEXT_PUBLIC_ORG_SLUG: ${NEXT_PUBLIC_ORG_SLUG:-cevicheria-el-muelle}
+    container_name: rest-prod-pos
+    environment:
+      TZ: America/Lima
+    command: ["sh", "-c", "cd apps/pos && ../../node_modules/.bin/next start -H 0.0.0.0 -p 3001"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  kds:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NEXT_PUBLIC_ORG_SLUG: ${NEXT_PUBLIC_ORG_SLUG:-cevicheria-el-muelle}
+    container_name: rest-prod-kds
+    environment:
+      TZ: America/Lima
+    command: ["sh", "-c", "cd apps/kds && ../../node_modules/.bin/next start -H 0.0.0.0 -p 3002"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  menu:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NEXT_PUBLIC_ORG_SLUG: ${NEXT_PUBLIC_ORG_SLUG:-cevicheria-el-muelle}
+    container_name: rest-prod-menu
+    environment:
+      TZ: America/Lima
+    command: ["sh", "-c", "cd apps/menu && ../../node_modules/.bin/next start -H 0.0.0.0 -p 3003"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: rest-prod-caddy
+    ports:
+      - "${REST_HTTP_PORT:-8080}:80"
+      - "${REST_HTTPS_PORT:-8443}:443"
+    environment:
+      API_DOMAIN: ${API_DOMAIN:-api.localhost}
+      POS_DOMAIN: ${POS_DOMAIN:-pos.localhost}
+      KDS_DOMAIN: ${KDS_DOMAIN:-kds.localhost}
+      CARTA_DOMAIN: ${CARTA_DOMAIN:-carta.localhost}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - rest-caddy-data:/data
+    depends_on:
+      - web
+      - pos
+      - kds
+      - menu
+    restart: unless-stopped
+
+  # Túnel público en modo TOKEN (remotamente gestionado por API): el ingress
+  # vive en Cloudflare (rest/pos/kds/carta.dylmow.tech → servicios internos) y
+  # el token viaja por .env — cero archivos de credenciales en el host. Este
+  # modelo es el que migra sin cambios a un VPS.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: rest-prod-cloudflared
+    command: ["tunnel", "--no-autoupdate", "run", "--token", "${CLOUDFLARE_TUNNEL_TOKEN:?define CLOUDFLARE_TUNNEL_TOKEN en .env}"]
+    profiles: ["tunnel"]
+    restart: unless-stopped
+
+volumes:
+  rest-pgdata:
+  rest-caddy-data:
