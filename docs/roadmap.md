@@ -1,6 +1,6 @@
 # 01 · Roadmap
 
-Horizonte: 12 meses, 6 fases. Cada fase tiene criterios de salida medibles — no se avanza sin cumplirlos. El detalle feature-por-feature está en [02-modulos-features.md](02-modulos-features.md).
+Horizonte: 12 meses, 6 fases. Cada fase tiene criterios de salida medibles — no se avanza sin cumplirlos. El detalle feature-por-feature está en [modulos-features.md](modulos-features.md).
 
 **Métrica North Star:** órdenes procesadas a través de la plataforma por semana.
 **Definición de activación (el momento "ajá"):** primera orden tomada en el POS, impresa en térmica y cerrada en el KDS — aunque el local haya estado sin internet.
@@ -15,7 +15,7 @@ Horizonte: 12 meses, 6 fases. Cada fase tiene criterios de salida medibles — n
 |---|---|---|
 | 0.1 | Monorepo Turborepo + apps (`web-admin`, `pos`, `kds`, `menu-cliente`, `landing`) + packages (`ui`, `db`, `sync`, `printer`, `types`) | Convención next-forge |
 | 0.2 | Base SaaS: auth, organizaciones (tenants), roles, landing, emails transaccionales | Fork de `ixartz/SaaS-Boilerplate` (MIT) o `nextjs/saas-starter` + `shadcn-admin` |
-| 0.3 | Design system base: tokens, tema, componentes shadcn ajustados al diseño de [04](04-diseno-web.md) | `shadcn-ui/ui` |
+| 0.3 | Design system base: tokens, tema, componentes shadcn ajustados al diseño de [04](diseno-web.md) | `shadcn-ui/ui` |
 | 0.4 | DB: schema multi-tenant (`tenant_id` + RLS), migraciones Drizzle | Drizzle + Neon branching |
 | 0.5 | CI/CD, preview deploys, Sentry, PostHog, i18n (es/en/pt) con next-intl | Vercel + Acciones GitHub |
 | 0.6 | E2E smoke con Playwright (login → crear producto) | Playwright |
@@ -32,7 +32,7 @@ Horizonte: 12 meses, 6 fases. Cada fase tiene criterios de salida medibles — n
 |---|---|---|
 | 1.1 | **Catálogo**: categorías, productos con foto, modificadores/grupos obligatorios-opcionales, precios, disponibilidad/86 | Modelos de dominio de TastyIgniter (MIT) |
 | 1.2 | **POS tablet offline-first**: toma de órdenes rápida por categorías, mesas, descuentos, notas, split/merge de cuenta, retiro | UX Loyverse + patrones FloCafe (MIT) |
-| 1.3 | **Motor offline**: cola en IndexedDB (Dexie), outbox con client-UUID idempotente, sync con resolución de conflictos, indicador de sincronización | Arquitectura en [03](03-arquitectura.md) |
+| 1.3 | **Motor offline**: cola en IndexedDB (Dexie), outbox con client-UUID idempotente, sync con resolución de conflictos, indicador de sincronización | Arquitectura en [03](arquitectura.md) |
 | 1.4 | **Pagos simples**: efectivo con cálculo de cambio, tarjeta manual (monto), mixto | Loyverse (fortaleza en efectivo) |
 | 1.5 | **Impresión térmica**: comandas de cocina + recibo cliente vía Web Bluetooth/USB/Serial (ESC/POS), plantillas 58/80mm, impresoras de red | Familia `@point-of-sale` de NielsLeenheer (MIT) |
 | 1.6 | **KDS**: kanban en vivo (Nuevas→Preparando→Listo→Servido), sonoro, temporizadores, offline, targets táctiles grandes | Patrones KitchenAsty + mosaic (solo estudio, AGPL) |
@@ -53,7 +53,7 @@ Horizonte: 12 meses, 6 fases. Cada fase tiene criterios de salida medibles — n
 
 | # | Trabajo |
 |---|---|
-| 2.1 | **Menú QR público**: carta desde el mismo catálogo, cacheada agresivamente (<3s en 3G, ver [05](05-diseno-pwa.md)), multi-idioma, alérgenos, QR dinámico re-apuntable por mesa |
+| 2.1 | **Menú QR público**: carta desde el mismo catálogo, cacheada agresivamente (<3s en 3G, ver [05](diseno-pwa.md)), multi-idioma, alérgenos, QR dinámico re-apuntable por mesa |
 | 2.2 | **Pedidos a mesa (QR)**: el cliente pide desde la mesa → comanda a cocina/impresora (servicio a mesa simplificado) |
 | 2.3 | **Billing**: Stripe (España) + MercadoPago (LatAm) — suscripción por local, trials, dunning, plan gratuito |
 | 2.4 | **Onboarding self-serve**: wizard de setup (crear menú con plantillas por tipo de cocina, imprimir QR, conectar impresora, invitar staff) |

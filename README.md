@@ -10,12 +10,12 @@ Punto de venta y operación en la nube para restaurantes independientes (1–5 l
 
 | Doc | Contenido |
 |---|---|
-| [00-resumen-ejecutivo.md](docs/00-resumen-ejecutivo.md) | Visión, problema, target, posicionamiento, pricing, competencia |
-| [01-roadmap.md](docs/01-roadmap.md) | 6 fases (0→5), semanas, criterios de salida e hitos de negocio |
-| [02-modulos-features.md](docs/02-modulos-features.md) | 13 módulos: features básicas vs diferenciadoras, fase y fuente (reseñas/repos) |
-| [03-arquitectura.md](docs/03-arquitectura.md) | Stack, multi-tenancy, offline-first, impresión térmica, pagos, WhatsApp |
-| [04-diseno-web.md](docs/04-diseno-web.md) | Design system, layout del admin, wireframes por pantalla, breakpoints |
-| [05-diseno-pwa.md](docs/05-diseno-pwa.md) | Las 4 superficies PWA (dueño, mesero, cocina KDS, cliente QR) + técnica PWA |
+| [resumen-ejecutivo.md](docs/resumen-ejecutivo.md) | Visión, problema, target, posicionamiento, pricing, competencia |
+| [roadmap.md](docs/roadmap.md) | 6 fases (0→5), semanas, criterios de salida e hitos de negocio |
+| [modulos-features.md](docs/modulos-features.md) | 13 módulos: features básicas vs diferenciadoras, fase y fuente (reseñas/repos) |
+| [arquitectura.md](docs/arquitectura.md) | Stack, multi-tenancy, offline-first, impresión térmica, pagos, WhatsApp |
+| [diseno-web.md](docs/diseno-web.md) | Design system, layout del admin, wireframes por pantalla, breakpoints |
+| [diseno-pwa.md](docs/diseno-pwa.md) | Las 4 superficies PWA (dueño, mesero, cocina KDS, cliente QR) + técnica PWA |
 
 ## Decisiones fundamentales (ya tomadas)
 
@@ -27,9 +27,9 @@ Punto de venta y operación en la nube para restaurantes independientes (1–5 l
 
 ## Cómo usar estos documentos
 
-- Para decidir **qué se construye y cuándo** → [01-roadmap.md](docs/01-roadmap.md) + [02-modulos-features.md](docs/02-modulos-features.md).
-- Para **cómo se construye** → [03-arquitectura.md](docs/03-arquitectura.md).
-- Para **cómo se ve** → [04-diseno-web.md](docs/04-diseno-web.md) + [05-diseno-pwa.md](docs/05-diseno-pwa.md).
+- Para decidir **qué se construye y cuándo** → [roadmap.md](docs/roadmap.md) + [modulos-features.md](docs/modulos-features.md).
+- Para **cómo se construye** → [arquitectura.md](docs/arquitectura.md).
+- Para **cómo se ve** → [diseno-web.md](docs/diseno-web.md) + [diseno-pwa.md](docs/diseno-pwa.md).
 
 ## Estado de implementación — Fases 0–5 ✅ (parciales) · listo para deploy
 
@@ -45,7 +45,7 @@ Monorepo Turborepo con **backend real multi-tenant y las 4 apps conectadas**, ve
 - ✅ **CI** — GitHub Actions (`.github/workflows/ci.yml`): typecheck + tests + build en cada push/PR.
 - ✅ **SEO landing** — metadata, canonical, sitemap, robots y JSON-LD (SoftwareApplication, precio PEN).
 
-**Por fase (docs/01-roadmap.md):**
+**Por fase (docs/roadmap.md):**
 
 - **Fase 0 ✅** — Monorepo, auth real con organizaciones, DB Postgres (pglite/Neon) con RLS por rol no-superuser, migraciones Drizzle, CI.
 - **Fase 1 ✅** — POS offline-first (Dexie, toggle sin internet, cobro con cambio/propina/mixto, recibo ESC/POS real, corte de caja), KDS en vivo con push, carta QR con pedidos, menú administrable.
@@ -118,4 +118,4 @@ docker compose -f docker-compose.prod.yml build
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-**Pendiente para deploy real (requiere terceros):** credenciales de Stripe/MercadoPago, número de WhatsApp verificado por Meta, acuerdos con agregadores, terminal de pagos física, fiscal (Verifactu/CFDI vía partners) y i18n si se abren otros mercados. Detalles en [01-roadmap.md](docs/01-roadmap.md).
+**Pendiente para deploy real (requiere terceros):** credenciales de Stripe/MercadoPago, número de WhatsApp verificado por Meta, acuerdos con agregadores, terminal de pagos física, fiscal (Verifactu/CFDI vía partners) y i18n si se abren otros mercados. Detalles en [roadmap.md](docs/roadmap.md).

@@ -20,7 +20,7 @@ Una sola tecnología (PWA), **cuatro superficies por rol**. Ninguna pasa por tie
 | App shell (JS/CSS de POS/KDS) | Precache + stale-while-revalidate | Arranque instantáneo sin red |
 | Catálogo/menú del local | Cache-first con revalidación en background | La carta QR abre aunque el Wi-Fi del local esté saturado (el benchmark de Mr Yum) |
 | API de órdenes (GET) | Network-first con fallback a caché | Datos frescos si hay red, siempre visibles si no |
-| Mutaciones (POST órdenes) | Nunca cachear → cola Dexie + Background Sync | Ver [03-arquitectura.md](03-arquitectura.md) |
+| Mutaciones (POST órdenes) | Nunca cachear → cola Dexie + Background Sync | Ver [arquitectura.md](arquitectura.md) |
 | Fotos de productos | Cache-first, AVIF/WebP, LRU | Ancho de banda de móviles 3G/4G |
 
 - **Web Push (VAPID):** nueva orden → cocina; orden lista/cobrar → mesero; resumen diario + alertas (stock, canal caído) → dueño. Permiso pedido en contexto (no en la primera visita).

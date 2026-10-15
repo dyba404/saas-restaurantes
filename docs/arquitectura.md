@@ -108,7 +108,7 @@ Reglas clave:
 - **Toda mutación genera un evento con `clientUuid`** (UUID v7). El servidor deduplica con índice único — reintentos nunca duplican una orden.
 - **El servidor es la verdad para numeración** (folios de ticket, número de orden): el POS imprime un folio provisional local y el definitivo llega al sincronizar. Los folios fiscales solo se emiten online.
 - **Conflictos**: el 99% se resuelve por regla (última escritura por campo en entidades de catálogo; órdenes nunca se "conflictean" porque son append-only). Casos raros (mesa editada en 2 tablets offline) → detector de divergencia que marca la orden para revisión del gerente en vez de fusionar en silencio.
-- **Bootstrap y delta-sync**: al abrir, la tablet pide catálogo+mesas+config (compresible, ~100–400 KB); luego delta por `updated_at` cada vez que recupera red. Catálogo cacheado por service worker también (ver [05](05-diseno-pwa.md)).
+- **Bootstrap y delta-sync**: al abrir, la tablet pide catálogo+mesas+config (compresible, ~100–400 KB); luego delta por `updated_at` cada vez que recupera red. Catálogo cacheado por service worker también (ver [05](diseno-pwa.md)).
 - **UI siempre honesta**: badge visible "3 órdenes sin sincronizar" (patrón Loyverse, mejorado); nada se borra de la cola sin confirmación del servidor.
 - **Reloj local**: usar hora del servidor al sincronizar para métricas; timestamp local solo para orden de eventos.
 

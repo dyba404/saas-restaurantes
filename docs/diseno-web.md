@@ -1,6 +1,6 @@
 # 04 · Diseño Web (Admin + POS desktop)
 
-Aplica a: panel del dueño/gerente (web-admin), configuración, reportes y facturación SaaS. El diseño de las superficies PWA táctiles (POS tablet, KDS, cliente QR) está en [05-diseno-pwa.md](05-diseno-pwa.md).
+Aplica a: panel del dueño/gerente (web-admin), configuración, reportes y facturación SaaS. El diseño de las superficies PWA táctiles (POS tablet, KDS, cliente QR) está en [diseno-pwa.md](diseno-pwa.md).
 
 ## Design System
 
