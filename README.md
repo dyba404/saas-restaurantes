@@ -16,14 +16,13 @@ Punto de venta y operación en la nube para restaurantes independientes (1–5 l
 | [03-arquitectura.md](docs/03-arquitectura.md) | Stack, multi-tenancy, offline-first, impresión térmica, pagos, WhatsApp |
 | [04-diseno-web.md](docs/04-diseno-web.md) | Design system, layout del admin, wireframes por pantalla, breakpoints |
 | [05-diseno-pwa.md](docs/05-diseno-pwa.md) | Las 4 superficies PWA (dueño, mesero, cocina KDS, cliente QR) + técnica PWA |
-| [06-repos-referencia.md](docs/06-repos-referencia.md) | Catálogo verificado de repos (licencias) y estrategia de reuso |
 
 ## Decisiones fundamentales (ya tomadas)
 
 1. **Mercado:** Perú primero, luego LatAm + España. WhatsApp es canal core (~80% de las órdenes de comida inician ahí), impresoras térmicas ESC/POS, efectivo, MercadoPago/Stripe.
 2. **Stack:** Next.js + TypeScript + Tailwind + shadcn/ui + Postgres + Serwist (PWA). Se reaprovechan boilerplates MIT en vez de construir desde cero.
 3. **Wedge (producto de entrada):** POS tablet offline-first + KDS + menú QR desde el mismo catálogo + tickets térmicos. Todo lo demás crece encima.
-4. **No reinventar la rueda:** base sobre repos MIT (`ixartz/SaaS-Boilerplate`, `shadcn-admin`, familia `@point-of-sale` para impresión, `Serwist` para PWA). Ver [06-repos-referencia.md](docs/06-repos-referencia.md).
+4. **No reinventar la rueda:** librerías MIT probadas antes que código propio donde el diferencial no está.
 5. **Licencias:** los repos AGPL/GPL (URY, satisfecho, ERPNext, mosaic) se usan **solo como referencia de estudio**, nunca como base de código.
 
 ## Cómo usar estos documentos
@@ -31,7 +30,6 @@ Punto de venta y operación en la nube para restaurantes independientes (1–5 l
 - Para decidir **qué se construye y cuándo** → [01-roadmap.md](docs/01-roadmap.md) + [02-modulos-features.md](docs/02-modulos-features.md).
 - Para **cómo se construye** → [03-arquitectura.md](docs/03-arquitectura.md).
 - Para **cómo se ve** → [04-diseno-web.md](docs/04-diseno-web.md) + [05-diseno-pwa.md](docs/05-diseno-pwa.md).
-- Para **qué se copia de dónde** → [06-repos-referencia.md](docs/06-repos-referencia.md).
 
 ## Estado de implementación — Fases 0–5 ✅ (parciales) · listo para deploy
 

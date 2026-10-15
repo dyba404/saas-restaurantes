@@ -66,7 +66,7 @@ Principio: **nunca cobrar por dispositivo ni por orden individual**, nunca contr
 
 Next.js + TypeScript + Turborepo · Tailwind + shadcn/ui · Postgres (Neon) + Drizzle · Serwist (PWA offline) · IndexedDB/Dexie (cola de órdenes offline) · WebSocket/SSE (KDS en vivo) · Web Bluetooth/USB/Serial → ESC/POS (tickets) · Stripe + MercadoPago · WhatsApp Cloud API · i18n es/en/pt con next-intl.
 
-Detalle completo en [03-arquitectura.md](03-arquitectura.md); qué repos se usan en [06-repos-referencia.md](06-repos-referencia.md).
+Detalle completo en [03-arquitectura.md](03-arquitectura.md).
 
 ## Riesgos principales
 
